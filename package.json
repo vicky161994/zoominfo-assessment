@@ -1,0 +1,38 @@
+{
+  "name": "zoominfo-assessment",
+  "version": "1.0.0",
+  "description": "zoominfo-assessment node app for api",
+  "main": "main.js",
+  "scripts": {
+    "dev": "cross-env ENVIRONMENT=development nodemon main.js",
+    "start": "cross-env ENVIRONMENT=staging node main.js",
+    "start:prod": "cross-env ENVIRONMENT=production node main.js",
+    "test": "cross-env ENVIRONMENT=test jest"
+  },
+  "author": "Vicky Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "helmet": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "loadsh": "^0.0.4",
+    "mongoose": "^6.1.7",
+    "mongoose-autopopulate": "^0.16.0",
+    "morgan": "^1.10.0",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
+  }
+}
