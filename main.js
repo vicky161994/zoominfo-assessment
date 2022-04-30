@@ -49,5 +49,9 @@ if (environment !== "test") {
     logger.info(`running server on from port:::::::${PORT}`);
   });
 }
+if (process.env.ENVIRONMENT !== "test") {
+  require("./common/config/mongoose.service").connectWithRetry();
+}
+
 app.use(errorHandler);
 module.exports = app;
