@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("./utils/logger");
+const routes = require("./routes");
 const cors = require("cors");
 const app = express();
 app.use(cors());
@@ -15,4 +16,12 @@ app.get("/*", (req, res, next) => {
   }
   next();
 });
+
+app.use("/users", routes.User);
+// request to handle undefined or all other routes
+app.get("*", (req, res) => {
+  logger.info("users route");
+  res.send(process.env.API_WORKS_MESSAGE);
+});
+
 module.exports = app;
