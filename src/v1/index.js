@@ -18,6 +18,7 @@ app.get("/*", (req, res, next) => {
 });
 
 app.use("/users", routes.User);
+app.use("/folders", routes.Folder);
 // request to handle undefined or all other routes
 app.get("*", (req, res) => {
   logger.info("users route");
