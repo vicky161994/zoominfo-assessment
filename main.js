@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const logger = require("./src/v1/utils/logger");
 const health = require("./src/v1/utils/health");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swagger = require("./swagger");
 const { errorHandler } = require("./src/v1/middleware/errorHandler");
 const environment = process.env.ENVIRONMENT || process.env.ENVIRONMENT;
 let envPath = "./environments/.env-dev";
@@ -52,6 +54,9 @@ if (environment !== "test") {
 if (process.env.ENVIRONMENT !== "test") {
   require("./common/config/mongoose.service").connectWithRetry();
 }
+
+//swagger set up
+app.use("/api-docs/v1", swagger.v1, swaggerUi.serve, swaggerUi.setup());
 
 app.use(errorHandler);
 module.exports = app;

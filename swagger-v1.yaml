@@ -1,0 +1,18 @@
+openapi: 3.0.1
+info:
+  title: Zoominfo Assessment API
+  description: Zoominfo Assessment API
+  version: 1.0.0
+servers:
+  - url: localhost:6002/api/v1
+components:
+  securitySchemes:
+    bearerAuth: 
+      type: "apiKey"
+      description: |
+        Bearer \<token\>
+        <br/>OR<br/>
+      name: "authorization"
+      scheme: "bearer"
+      in: "header"
+paths:
