@@ -1,5 +1,5 @@
 const logger = require("../utils/logger");
-const { User } = require("../models");
+const { User, Folder, File } = require("../models");
 const CODE = require("../Helper/httpResponseCode");
 const MESSAGE = require("../Helper/httpResponseMessage");
 const bcrypt = require("bcrypt");
@@ -62,6 +62,42 @@ exports.register = async (req, res, payload) => {
         is_active: registeredUser.is_active,
         created_on: registeredUser.created_on,
         modified_on: registeredUser.modified_on,
+      },
+    });
+  } catch (error) {
+    logger.error(error);
+    return res
+      .status(CODE.INTERNAL_SERVER_ERROR)
+      .send({ message: serverError });
+  }
+};
+
+exports.getFilesAndFolderForDashboard = async (req, res, skip, limit) => {
+  logger.info("ORM::getFilesAndFolderForDashboard");
+  try {
+    let finalDataSet = [];
+    let folderList = await Folder.find({
+      createdBy: req.user._id,
+      is_active: true,
+    })
+      .sort({ created_on: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    let fileList = await File.find({
+      createdBy: req.user._id,
+      folder: { $eq: null },
+      is_active: true,
+    })
+      .sort({ created_on: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    finalDataSet.push(...folderList, ...fileList);
+    return res.status(CODE.EVERYTHING_IS_OK).send({
+      message: `List ${MESSAGE.SUCCESSFULLY_DONE}`,
+      data: {
+        finalDataSet,
       },
     });
   } catch (error) {

@@ -12,3 +12,8 @@ exports.folder = {
   model: "folders",
   collection: "folders",
 };
+
+exports.file = {
+  model: "files",
+  collection: "files",
+};

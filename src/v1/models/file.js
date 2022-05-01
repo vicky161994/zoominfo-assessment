@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
-const { folder, user } = require("../constants/collections");
-const folderSchema = new mongoose.Schema(
+const { folder, user, file } = require("../constants/collections");
+const fileSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: false,
+      default: null,
+    },
+    folder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: folder.model,
       required: false,
       default: null,
     },
@@ -14,7 +20,12 @@ const folderSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      default: "folder",
+      default: "file",
+    },
+    content: {
+      type: String,
+      required: false,
+      default: null,
     },
     is_active: {
       type: Boolean,
@@ -33,4 +44,4 @@ const folderSchema = new mongoose.Schema(
     timestamps: { createdAt: "created_on", updatedAt: "modified_on" },
   }
 );
-module.exports = mongoose.model(folder.model, folderSchema, folder.collection);
+module.exports = mongoose.model(file.model, fileSchema, file.collection);

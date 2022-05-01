@@ -57,3 +57,12 @@ exports.register = async (req, res) => {
       .send({ message: MESSAGE.serverError });
   }
 };
+
+exports.getFilesAndFolderForDashboard = async (req, res) => {
+  logger.info("services::getFilesAndFolderForDashboard");
+  let { page, limit } = req.query;
+  page = page ? page : 1;
+  limit = limit ? limit : 20;
+  const skip = (parseInt(page) - 1) * limit;
+  await UserORM.getFilesAndFolderForDashboard(req, res, skip, limit);
+};

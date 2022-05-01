@@ -1,5 +1,7 @@
 exports.userPopulateFields = "name email";
 
+exports.FolderPopulateFields = "name";
+
 exports.errorMessage = "Please provide correct input";
 
 exports.notAuthorizedMessage = "Not Authorized";

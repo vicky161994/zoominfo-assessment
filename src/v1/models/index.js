@@ -1,3 +1,4 @@
 const User = require("./user");
 const Folder = require("./folder");
-module.exports = { User, Folder };
+const File = require("./file");
+module.exports = { User, Folder, File };
