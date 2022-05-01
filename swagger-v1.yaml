@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: Zoominfo Assessment API
-  description: Zoominfo Assessment API
+  title: ZoomInfo Assessment API
+  description: ZoomInfo Assessment API
   version: 1.0.0
 servers:
-  - url: localhost:6002/api/v1
+  - url: http://localhost:6002/api/v1
 components:
   securitySchemes:
     bearerAuth: 
@@ -16,3 +16,454 @@ components:
       scheme: "bearer"
       in: "header"
 paths:
+  /users/login/:
+    post:
+      tags:
+        - "Authorization"
+      summary: "Login User"
+      operationId: "LoginUser"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  /users/register/:
+    post:
+      tags:
+        - "Authorization"
+      summary: "Register User"
+      operationId: "RegisterUser"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+      responses:
+        "201":
+          description: Resource Created
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "409":
+          description: "Already Exist"
+        "500":
+          description: "Server Error"        
+  /users/dashboard/:
+    get:
+      tags:
+        - "Dashboard"
+      summary: "Get folders & files for dashboard"
+      operationId: "Dashboard"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters:
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: page
+          in: query
+          schema: 
+            type: number
+        - name: limit
+          in: query
+          schema: 
+            type: number
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "409":
+          description: "Already Exist"
+        "500":
+          description: "Server Error"   
+
+  /files/create-file:
+    post:
+      tags:
+        - "Files"
+      summary: "Create Files"
+      operationId: "CreateFile"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters:
+        - name: authorization 
+          in: header
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                folderId:
+                  type: string
+              required:
+                - name
+      responses:
+        "201":
+          description: Resource Created
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "409":
+          description: "Already Exist"
+        "500":
+          description: "Server Error"   
+  "/files/get-files-in-folder/":
+    get:
+      tags:
+        - "Files"
+      summary: "Fetch list of files of a folder"
+      operationId: "file-list"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: folderId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema: 
+          type: number
+        - name: limit
+          in: query
+          schema: 
+          type: number
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  "/files/get-file-by-id/{fileId}/":
+    get:
+      tags:
+        - "Files"
+      summary: "Fetch files based on file ID"
+      operationId: "file"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  "/files/update-file/{fileId}/":
+    put:
+      tags:
+        - "Files"
+      summary: "Update file - change file name, move file within folder, update content of a file"
+      operationId: "update-file"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                content:
+                  type: string
+                folderId:
+                  type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  "/files/delete-file/{fileId}/":
+    delete:
+      tags:
+        - "Files"
+      summary: "File delete"
+      operationId: "file-delete"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+
+  /folders/create-folder:
+    post:
+      tags:
+        - "Folders"
+      summary: "Create folder"
+      operationId: "create-folder"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters:
+        - name: authorization 
+          in: header
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+      responses:
+        "201":
+          description: Resource Created
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "409":
+          description: "Already Exist"
+        "500":
+          description: "Server Error"   
+  "/folders/get-all-folder/":
+    get:
+      tags:
+        - "Folders"
+      summary: "Fetch list of folder"
+      operationId: "folder-list"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: page
+          in: query
+          schema: 
+            type: number
+        - name: limit
+          in: query
+          schema: 
+            type: number
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  "/folders/get-folder-by-id/{folderId}/":
+    get:
+      tags:
+        - "Folders"
+      summary: "Fetch Folder based on ID"
+      operationId: "file"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  "/folders/update-folder/{folderId}/":
+    put:
+      tags:
+        - "Folders"
+      summary: "Update folder - change folder name"
+      operationId: "update-file"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string  
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"
+  "/folders/delete-folder/{folderId}/":
+    delete:
+      tags:
+        - "Folders"
+      summary: "Folder delete"
+      operationId: "folder-delete"
+      security:
+        - bearerAuth:
+          type: "http"
+          scheme: "bearer"
+      parameters: 
+        - in: header
+          name: authorization 
+          required: true 
+          schema: 
+            type: string
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Invalid"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Server Error"

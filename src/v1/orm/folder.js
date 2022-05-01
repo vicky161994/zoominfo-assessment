@@ -1,5 +1,5 @@
 const { userPopulate } = require("../constants/populate");
-const { Folder } = require("../models");
+const { Folder, File } = require("../models");
 const logger = require("../utils/logger");
 const CODE = require("../Helper/httpResponseCode");
 const MESSAGE = require("../Helper/httpResponseMessage");
@@ -97,6 +97,12 @@ exports.deleteFolder = async (req, res, folderId) => {
   try {
     await Folder.findOneAndUpdate(
       { _id: folderId, createdBy: req.user._id },
+      {
+        is_active: false,
+      }
+    );
+    await File.updateMany(
+      { folder: folderId, createdBy: req.user._id },
       {
         is_active: false,
       }

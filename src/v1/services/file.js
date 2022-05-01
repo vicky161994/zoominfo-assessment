@@ -17,11 +17,6 @@ exports.createNewFile = async (req, res) => {
     filter.is_active = true;
     filter.name = name;
     filter.createdBy = req.user._id;
-    if (folderId) {
-      filter.folder = folderId;
-    } else {
-      filter.folder = { $eq: null };
-    }
     const isFileExist = await File.findOne(filter);
     if (isFileExist) {
       return res

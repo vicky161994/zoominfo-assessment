@@ -21,7 +21,6 @@ if (environment === "test") {
 }
 require("dotenv").config({ path: path.resolve(process.cwd(), envPath) });
 const PORT = process.env.PORT || 5000;
-const { verifyToken } = require("./src/v1/middleware/auth");
 console.log("environment::::::", environment);
 console.log("envPath::::::", envPath);
 if (process.env.NODE_ENV === "development") {
@@ -39,7 +38,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, parameterLimit: 5000000 }));
 app.use(compression());
-app.use(helmet());
+app.use(helmet.contentSecurityPolicy());
 app.use(cors());
 app.use("/api/health-check", health.check);
 app.use("/api/v1", require("./src/v1"));

@@ -96,9 +96,7 @@ exports.getFilesAndFolderForDashboard = async (req, res, skip, limit) => {
     finalDataSet.push(...folderList, ...fileList);
     return res.status(CODE.EVERYTHING_IS_OK).send({
       message: `List ${MESSAGE.SUCCESSFULLY_DONE}`,
-      data: {
-        finalDataSet,
-      },
+      data: finalDataSet,
     });
   } catch (error) {
     logger.error(error);

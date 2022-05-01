@@ -37,7 +37,7 @@ exports.createNewFolder = async (req, res) => {
 exports.getAllFolder = async (req, res) => {
   try {
     logger.info("Service::getAllFolder");
-    const { page, limit } = req.query;
+    let { page, limit } = req.query;
     page = page ? page : 1;
     limit = limit ? limit : 20;
     let filter = {};
