@@ -9,6 +9,8 @@
 1. node: v17.0.0
 2. NPM: 8.1.0
 
+* To access this applicaiton one need to register first.
+
 # Swagger API
 url: http://localhost:6002/api-docs/v1/#/
 
